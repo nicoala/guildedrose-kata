@@ -79,9 +79,9 @@ public class GildedRoseTest {
     }
 
     @Test
-    public void aged_brie_gains_quality_when_sellin_reaches_minus10() throws Exception {
-        Item elixir = new Item("Aged Brie", 9, 5);
-        Item[] items = new Item[] {elixir};
+    public void aged_brie_gains_quality_when_sellin_decreases() throws Exception {
+        Item brie = new Item("Aged Brie", 9, 5);
+        Item[] items = new Item[] {brie};
 
         GildedRose app = new GildedRose(items);
         app.updateQuality();
@@ -93,8 +93,8 @@ public class GildedRoseTest {
 
     @Test
     public void aged_brie_gains_quality_twice_when_sellin_reaches_minus0() throws Exception {
-        Item elixir = new Item("Aged Brie", -10, 5);
-        Item[] items = new Item[] {elixir};
+        Item brie = new Item("Aged Brie", -10, 5);
+        Item[] items = new Item[] {brie};
 
         GildedRose app = new GildedRose(items);
         app.updateQuality();
@@ -106,8 +106,8 @@ public class GildedRoseTest {
 
     @Test
     public void backstage_passes_gains_quality_twice_when_sellin_reaches_minus10() throws Exception {
-        Item elixir = new Item("Backstage passes to a TAFKAL80ETC concert", 8, 5);
-        Item[] items = new Item[] {elixir};
+        Item passes = new Item("Backstage passes to a TAFKAL80ETC concert", 8, 5);
+        Item[] items = new Item[] {passes};
 
         GildedRose app = new GildedRose(items);
         app.updateQuality();
@@ -119,8 +119,8 @@ public class GildedRoseTest {
 
     @Test
     public void backstage_passes_gains_quality_by_three_when_sellin_reaches_minus5() throws Exception {
-        Item elixir = new Item("Backstage passes to a TAFKAL80ETC concert", 5, 5);
-        Item[] items = new Item[] {elixir};
+        Item passes = new Item("Backstage passes to a TAFKAL80ETC concert", 5, 5);
+        Item[] items = new Item[] {passes};
 
         GildedRose app = new GildedRose(items);
         app.updateQuality();
@@ -132,13 +132,39 @@ public class GildedRoseTest {
 
     @Test
     public void backstage_passes_loses_quality_when_sellin_reaches_minus_0() throws Exception {
-        Item elixir = new Item("Backstage passes to a TAFKAL80ETC concert", 0, 5);
-        Item[] items = new Item[] {elixir};
+        Item passes = new Item("Backstage passes to a TAFKAL80ETC concert", 0, 5);
+        Item[] items = new Item[] {passes};
 
         GildedRose app = new GildedRose(items);
         app.updateQuality();
 
         Item expectedItem = new Item("Backstage passes to a TAFKAL80ETC concert", -1, 0);
+
+        expectedItemIsEqualToOutput(app.items[0], expectedItem);
+    }
+
+    @Test
+    public void conjured_item_decrease_quality_twice_as_fast() throws Exception {
+        Item conjured = new Item("Conjured Mana Cake", 3, 6);
+        Item[] items = new Item[] {conjured};
+
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+
+        Item expectedItem = new Item("Conjured Mana Cake", 2, 4);
+
+        expectedItemIsEqualToOutput(app.items[0], expectedItem);
+    }
+
+    @Test
+    public void conjured_item_decrease_quality_twice_as_fast_when_sellin_minus0() throws Exception {
+        Item conjured = new Item("Conjured Mana Cake", -1, 6);
+        Item[] items = new Item[] {conjured};
+
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+
+        Item expectedItem = new Item("Conjured Mana Cake", -2, 2);
 
         expectedItemIsEqualToOutput(app.items[0], expectedItem);
     }
